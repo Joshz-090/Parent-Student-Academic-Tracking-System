@@ -1,0 +1,19 @@
+# Database & Local Configs
+config/db_connection.php
+config/config.php
+
+# Uploads
+public/assets/uploads/*
+!public/assets/uploads/.gitkeep
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# XAMPP/Local environment
+php_error.log
+error_log

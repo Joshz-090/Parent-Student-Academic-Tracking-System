@@ -1,9 +1,4 @@
 <?php
-/**
- * Index Page
- * Redirect to login or dashboard based on auth status
- */
-
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';

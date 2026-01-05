@@ -176,6 +176,27 @@ function getSchoolBranding($school_id) {
 }
 
 /**
+ * Get default school branding (for login/landing pages)
+ */
+function getDefaultSchoolBranding() {
+    global $pdo;
+    
+    try {
+        $stmt = $pdo->query("
+            SELECT id, school_name, logo, primary_color, footer_text, academic_year 
+            FROM schools 
+            WHERE deleted_at IS NULL 
+            ORDER BY id ASC 
+            LIMIT 1
+        ");
+        return $stmt->fetch();
+    } catch (PDOException $e) {
+        error_log("Get Default School Branding Error: " . $e->getMessage());
+        return null;
+    }
+}
+
+/**
  * Generate tracer activity manually
  */
 function generateTracerActivity($student_id, $type, $title, $description = null, $icon = 'info', $color = 'blue', $reference_id = null, $reference_table = null) {

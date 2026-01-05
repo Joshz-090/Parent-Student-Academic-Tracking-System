@@ -34,7 +34,7 @@ function login($identifier, $password) {
         // If not found by email, see if it's a Student ID for a parent
         if (!$user) {
             $stmt = $pdo->prepare("
-                SELECT u.id, u.school_id, u.name, u.email, u.password, u.role
+                SELECT u.id, u.school_id, u.name, u.email, u.password, u.role, s.id as login_student_id
                 FROM users u
                 JOIN students s ON u.id = s.parent_id
                 WHERE s.student_code = ? AND u.role = 'parent' AND u.deleted_at IS NULL
@@ -51,6 +51,11 @@ function login($identifier, $password) {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
             $_SESSION['user_role'] = $user['role'];
+            // Store specific student ID if logged in via student code
+            if (isset($user['login_student_id'])) {
+                $_SESSION['login_student_id'] = $user['login_student_id'];
+            }
+
             $_SESSION['logged_in'] = true;
             $_SESSION['last_activity'] = time();
             

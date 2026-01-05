@@ -79,20 +79,28 @@ mysql -u root -p < database/schema.sql
 
 ### Step 3: Configure Database Connection
 
-Edit `config/db_connection.php` if needed (default settings work for XAMPP):
+The system uses `.example.php` files to keep your actual credentials secure.
+
+1.  Copy `config/db_connection.example.php` to `config/db_connection.php`
+2.  Copy `config/config.example.php` to `config/config.php`
+3.  Edit `config/db_connection.php` with your local database credentials:
 
 ```php
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'ps_tracer');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', ''); // Default for XAMPP is empty
 ```
+
+> [!IMPORTANT]
+> Never commit `db_connection.php` or `config.php` to version control. They are automatically ignored by `.gitignore`.
 
 ### Step 4: Set Permissions
 
-Ensure the uploads directory is writable:
+Ensure the uploads directory is writable by the web server:
 
 ```bash
+# For Linux/macOS
 chmod -R 755 public/assets/uploads/
 ```
 
@@ -105,7 +113,7 @@ http://localhost/PS-tracer/public/
 
 ## 🔐 Default Credentials
 
-The system comes with demo accounts:
+The system comes with pre-configured demo accounts for testing:
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -113,7 +121,8 @@ The system comes with demo accounts:
 | **Teacher** | teacher1@demo.school | password |
 | **Parent** | parent1@demo.school | password |
 
-> ⚠️ **Important**: Change these passwords in production!
+> [!WARNING]
+> **Production Security**: Immediately change these passwords after installation. For production, consider moving database credentials to environment variables.
 
 ## 📁 Project Structure
 

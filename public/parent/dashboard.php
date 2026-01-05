@@ -18,15 +18,30 @@ $selected_class_id = $_GET['class_id'] ?? null;
 
 // Fetch Parent's Students
 try {
-    $stmt = $pdo->prepare("
+    $sql = "
         SELECT s.*, 
                (SELECT COUNT(*) FROM tracer_activities WHERE student_id = s.id AND activity_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)) as recent_activities,
                (SELECT attendance_rate FROM v_attendance_summary WHERE student_id = s.id) as attendance_rate
         FROM students s
         WHERE s.parent_id = ? AND s.school_id = ? AND s.deleted_at IS NULL
-    ");
-    $stmt->execute([$user['id'], $school_id]);
+    ";
+    
+    $params = [$user['id'], $school_id];
+
+    // Restrict to specific student if logged in via student code
+    if (isset($_SESSION['login_student_id'])) {
+        $sql .= " AND s.id = ?";
+        $params[] = $_SESSION['login_student_id'];
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     $students = $stmt->fetchAll();
+
+    // If restricted mode and no student selected, auto-select the restricted student
+    if (isset($_SESSION['login_student_id']) && !$selected_student_id && count($students) > 0) {
+        $selected_student_id = $students[0]['id'];
+    }
 
     $student_classes = [];
     $attendance = [];
