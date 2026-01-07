@@ -198,8 +198,12 @@ try {
                     </div>
                     
                     <div class="col-span-2 sm:col-span-1">
-                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Login Email</label>
+                        <div class="flex items-center justify-between mb-3">
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest">Login Email</label>
+                            <div id="email_status" class="w-2.5 h-2.5 rounded-full bg-gray-300 transition-colors duration-300" title="Email Availability status"></div>
+                        </div>
                         <input type="email" name="email" id="modal_email" required class="w-full bg-gray-50 border-2 border-transparent focus:border-[var(--brand-color)] rounded-2xl px-6 py-4 font-bold text-gray-900 outline-none transition-all">
+                        <p id="email_msg" class="text-[10px] font-bold mt-1 hidden italic"></p>
                     </div>
                     
                     <div class="col-span-2 sm:col-span-1">
@@ -248,6 +252,10 @@ try {
             phoneInput.value = "";
             passInput.placeholder = "Enter password";
             passInput.required = true;
+            
+            // Reset email status
+            updateEmailUI('reset');
+            
             modal.classList.remove('hidden');
         }
 
@@ -264,7 +272,69 @@ try {
             phoneInput.value = user.phone || "";
             passInput.placeholder = "Leave blank to keep same";
             passInput.required = false;
+            
+            // Check initial email status
+            checkEmailAvailability();
+            
             modal.classList.remove('hidden');
+        }
+
+        // Email Availability Check Logic
+        let checkTimeout;
+        const emailStatus = document.getElementById('email_status');
+        const emailMsg = document.getElementById('email_msg');
+
+        emailInput.addEventListener('input', () => {
+            clearTimeout(checkTimeout);
+            updateEmailUI('pending');
+            checkTimeout = setTimeout(checkEmailAvailability, 500);
+        });
+
+        async function checkEmailAvailability() {
+            const email = emailInput.value.trim();
+            const userId = userIdInput.value;
+            
+            if (!email || !email.includes('@')) {
+                updateEmailUI('reset');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${APP_URL}/admin/api/check_email.php?email=${encodeURIComponent(email)}&exclude_id=${userId}`);
+                const data = await response.json();
+                
+                if (data.available) {
+                    updateEmailUI('available');
+                } else {
+                    updateEmailUI('taken');
+                }
+            } catch (error) {
+                console.error('Error checking email:', error);
+            }
+        }
+
+        function updateEmailUI(status) {
+            emailMsg.classList.remove('hidden');
+            switch(status) {
+                case 'available':
+                    emailStatus.className = 'w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]';
+                    emailMsg.innerText = 'Email is available';
+                    emailMsg.className = 'text-[10px] font-bold mt-1 italic text-green-600';
+                    break;
+                case 'taken':
+                    emailStatus.className = 'w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]';
+                    emailMsg.innerText = 'This email is already in use';
+                    emailMsg.className = 'text-[10px] font-bold mt-1 italic text-red-600';
+                    break;
+                case 'pending':
+                    emailStatus.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse';
+                    emailMsg.innerText = 'Checking...';
+                    emailMsg.className = 'text-[10px] font-bold mt-1 italic text-amber-500';
+                    break;
+                default:
+                    emailStatus.className = 'w-2.5 h-2.5 rounded-full bg-gray-300';
+                    emailMsg.classList.add('hidden');
+            }
         }
     </script>
     <script src="<?php echo APP_URL; ?>/assets/js/main.js"></script>

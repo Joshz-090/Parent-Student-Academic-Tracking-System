@@ -69,12 +69,12 @@ Activities are ordered by most recent and can be filtered by type (attendance, g
 
 ```bash
 # Using MySQL command line
-mysql -u root -p < database/schema.sql
+mysql -u root -p < database/ps_tracer_system.sql
 
 # Or use phpMyAdmin:
 # - Open http://localhost/phpmyadmin
 # - Create database 'ps_tracer' (or it will be created automatically)
-# - Import database/schema.sql
+# - Import database/ps_tracer_system.sql
 ```
 
 ### Step 3: Configure Database Connection
@@ -132,7 +132,8 @@ PS-tracer/
 │   ├── db_connection.php      # PDO database connection
 │   └── config.php              # Global configuration
 ├── database/
-│   └── schema.sql              # Complete database schema
+│   ├── ps_tracer_system.sql    # Complete database schema & seed data
+│   └── README_DB.md            # Database documentation
 ├── includes/
 │   ├── auth.php                # Authentication functions
 │   ├── functions.php           # Helper functions

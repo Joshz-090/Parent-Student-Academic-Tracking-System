@@ -1,0 +1,5 @@
+PLEASE PASTE YOUR DESIGN DIAGRAMS IN THIS FOLDER.
+Files to include:
+- Class_Diagram.png
+- Sequence_Diagram_Tracer.png
+- Statechart_Diagram_Student.png

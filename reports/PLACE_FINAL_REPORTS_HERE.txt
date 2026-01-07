@@ -1,0 +1,5 @@
+PLEASE PLACE YOUR FINAL EVALUATION REPORTS HERE.
+Expected files:
+- Analysis_Phase.pdf
+- Design_Phase.pdf
+- Final_Submission_Report.pdf

@@ -1,0 +1,5 @@
+PLEASE PASTE YOUR USE CASE AND ACTIVITY DIAGRAMS IN THIS FOLDER.
+Files to include:
+- Use_Case_Diagram.png
+- Activity_Diagram_Login.png
+- Activity_Diagram_Tracer.png
