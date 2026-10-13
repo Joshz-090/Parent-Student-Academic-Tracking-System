@@ -1,5 +1,5 @@
 # Multi-School Parent–Student Tracer System
-
+ 
 A professional, scalable Parent–Student Tracer System built with PHP 8.0+, MySQL, Vanilla JavaScript, and Tailwind CSS. Designed to support multiple schools with individual branding, secure role-based access control, and a unique "Tracer" feature for tracking student progress.
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
